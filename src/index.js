@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const useInput = (initialValue) => {
+const vtexInput = (initialValue) => {
   const [input, setInput] = useState(initialValue);
 
   const inputChange = (e) => {
@@ -27,4 +27,4 @@ const useInput = (initialValue) => {
   return [input, inputChange, clearForm, setInput];
 };
 
-export default useInput;
+export default vtexInput;
