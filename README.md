@@ -8,7 +8,7 @@
 
 ### Installation
 
-```HTML
+```bash
 npm i vtex-input
 ```
 
@@ -16,17 +16,18 @@ npm i vtex-input
 
 import the package
 
-```HTML
+```JS
 import vtexInput from 'vtex-input';
 ```
 
 ### Example
 
-```HTML
-const [input, inputChange, clearForm, setInput] = vtexInput({
-  name: "",
+```JS
+const [input, inputChange, form, setInput] = vtexInput({
   email: "",
+  password: "",
   permissions: [],
+  file: [],
 });
 ```
 
@@ -48,7 +49,7 @@ Note:<br/>
 2. If you use checkbox, then you have to pass an empty array as the initial value. <br/>
 3. simply use a coma (,) to skip optional arguments. like this 👇
 
-```HTML
+```JS
 const [input, inputChange, , setInput] = vtexInput({
   name: "",
   email: "",
@@ -58,13 +59,43 @@ const [input, inputChange, , setInput] = vtexInput({
 
 ### Use clearForm to clear the form
 
-```HTML
-clearForm()
+```JS
+form.clear();
 ```
+
+### Get all the input data as an object
+
+```JS
+form.data();
+```
+
+Note:<br/>
+
+1. If you not use any file type input then you can use "input" to get all the input data as an object. and simply use it in api <br/>
+
+### With file type input
+
+```JS
+axios.post("/api/v1/test/file", form.data()).then((res) => {
+  console.log(res);
+  form.clear();
+});
+```
+
+### Without file type input
+
+```JS
+axios.post("/api/v1/test/file", input).then((res) => {
+  console.log(res);
+  form.clear();
+});
+```
+
+Don't worry you can use both type of input data in api as you like, But i will show you the best way to use it.
 
 ### Use setInput to set the custom value of the input as per your need
 
-```HTML
+```JS
 setInput({
   name: "John Doe",
   email: "johndoe@example.com"

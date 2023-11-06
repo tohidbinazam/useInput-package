@@ -1,11 +1,11 @@
 {
   "name": "vtex-input",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "description": "A useful react hook to handle any type of input data",
   "repository": "https://github.com/tohidbinazam/useInput-package",
   "main": "dist/index.js",
   "scripts": {
-    "build": "babel src/index.js --out-dir dist"
+    "build": "babel src/index.js -d dist"
   },
   "peerDependencies": {
     "react": "^18.2.0",
@@ -26,6 +26,7 @@
     "@babel/cli": "^7.23.0",
     "@babel/core": "^7.23.2",
     "@babel/preset-env": "^7.23.2",
-    "@babel/preset-react": "^7.22.15"
+    "@babel/preset-react": "^7.22.15",
+    "babel-preset-minify": "^0.5.2"
   }
 }
