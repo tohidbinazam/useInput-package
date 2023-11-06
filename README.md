@@ -43,6 +43,25 @@ All input will be like this 👇
 />;
 ```
 
+same for file type input 👇
+
+```HTML
+<input
+  type="file"
+  name="photo"
+  onChange={inputChange}
+  multiple
+/>;
+```
+
+### At latest update you get file url to display it
+
+name = Input name
+
+```JS
+const all_photo = input.[name].url
+```
+
 Note:<br/>
 
 1. Only the first argument is required, the rest are optional. <br/>
@@ -50,7 +69,7 @@ Note:<br/>
 3. simply use a coma (,) to skip optional arguments. like this 👇
 
 ```JS
-const [input, inputChange, , setInput] = vtexInput({
+const [input, , form, setInput] = vtexInput({
   name: "",
   email: "",
   permissions: [],
