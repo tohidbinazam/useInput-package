@@ -22,10 +22,20 @@ const useInput = (initialValue) => {
 
     if (type === 'file') {
       if (multiple) {
-        const url = Array.from(files).map((file) => URL.createObjectURL(file));
+        const urls = Array.from(files).map((file) => URL.createObjectURL(file));
+        const new_files = Array.from(files).map((file) => file);
+        if (input[name].files) {
+          return setInput((prev) => ({
+            ...prev,
+            [name]: {
+              files: [...prev[name].files, ...new_files],
+              urls: [...prev[name].urls, ...urls],
+            },
+          }));
+        }
         return setInput((prev) => ({
           ...prev,
-          [name]: { files, url },
+          [name]: { files: new_files, urls },
         }));
       } else {
         const url = URL.createObjectURL(files[0]);
@@ -65,9 +75,27 @@ const useInput = (initialValue) => {
     return formData;
   };
 
+  const deleteFile = (name, index) => {
+    if (index === undefined) {
+      return setInput((prev) => ({
+        ...prev,
+        [name]: initialValue[name],
+      }));
+    }
+
+    return setInput((prev) => ({
+      ...prev,
+      [name]: {
+        files: prev[name].files.filter((file, i) => i !== index),
+        urls: prev[name].urls.filter((url, i) => i !== index),
+      },
+    }));
+  };
+
   const form = {
     data: formData,
     clear: clearForm,
+    delFile: deleteFile,
   };
 
   return [input, inputChange, form, setInput];

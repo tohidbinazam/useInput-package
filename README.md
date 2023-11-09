@@ -2,7 +2,7 @@
 
 # V-Tex Input
 
-`A useful react hook to handle any type of input data`
+`A useful react hook to handle any type of input data just with an event`
 
 ## Getting started
 
@@ -27,7 +27,7 @@ const [input, inputChange, form, setInput] = vtexInput({
   email: "",
   password: "",
   permissions: [],
-  file: [],
+  photos: '',
 });
 ```
 
@@ -35,11 +35,11 @@ All input will be like this 👇
 
 ```HTML
 <input
-  type="text"
-  name="name"
+  type="email"
+  name="email"
   onChange={inputChange}
-  value={input.name}
-  placeholder="Role name"
+  value={input.email}
+  placeholder="Email Address"
 />;
 ```
 
@@ -48,18 +48,49 @@ same for file type input 👇
 ```HTML
 <input
   type="file"
-  name="photo"
+  name="photos"
   onChange={inputChange}
   multiple
 />;
 ```
 
-### At latest update you get file url to display it
+### At latest update you get file url to display and remove file
 
-name = Input name
+#### input type file and `without` multiple attribute👇
+
+You can find the file form input.photo.file <br/>
+photo = file type input name<br/>
+It's give you a single url of the file
 
 ```JS
-const all_photo = input.[name].url
+const photo = input.photo.url
+const photo_file = input.photos.file
+```
+
+and remove the file<br/>
+photo = File type input name and it's required
+
+```JSX
+<button onClick={() => form.delFile('photo')}>Delete</button>
+```
+
+#### input type file and `with` multiple attribute👇
+
+You can find all file form input.photos.files <br/>
+photos = file type input name<br/>
+It's give you an array of url of the files
+
+```JS
+const photos = input.photos.urls
+const photos_file = input.photos.files
+```
+
+and remove the file<br/>
+photos = File type input name and it's required<br/>
+index = you can get dynamic index from loop
+
+```JSX
+<button onClick={() => form.delFile('photos', index)}>Delete</Button>
 ```
 
 Note:<br/>
@@ -76,21 +107,30 @@ const [input, , form, setInput] = vtexInput({
 });
 ```
 
-### Use clearForm to clear the form
+### Use form.clear() to clear the form
 
 ```JS
 form.clear();
 ```
 
-### Get all the input data as an object
+### Get all the input data as FormData object
 
 ```JS
 form.data();
 ```
 
+### Get all the input data as an object
+
+input = first argument of the hook
+
+```JS
+input
+```
+
 Note:<br/>
 
-1. If you not use any file type input then you can use "input" to get all the input data as an object. and simply use it in api <br/>
+1. If you not use any file type input then you can use `input` or `form.data()` as you like and simply use it in api (For this case i recommend to use `input` ) <br/>
+2. If you use any file type input then you definitely use `form.data()` in api
 
 ### With file type input
 
