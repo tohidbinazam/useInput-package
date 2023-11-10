@@ -24,14 +24,15 @@ import vtexInput from 'vtex-input';
 
 ```JS
 const [input, inputChange, form, setInput] = vtexInput({
+  name: "",
   email: "",
-  password: "",
   permissions: [],
-  photos: '',
+  photos: [],
+  password: "",
 });
 ```
 
-All input will be like this 👇
+All input will be like those 👇
 
 ```HTML
 <input
@@ -41,9 +42,20 @@ All input will be like this 👇
   value={input.email}
   placeholder="Email Address"
 />;
+
+<input
+  type="checkbox"
+  name="permissions"
+  id="index"
+  // It required when you edit a form otherwise it's optional👇
+  checked={input.permissions?.includes("value")}
+  onChange={inputChange}
+  value="value"
+/>;
+
 ```
 
-same for file type input 👇
+Also same for file type input 👇
 
 ```HTML
 <input
@@ -58,12 +70,13 @@ same for file type input 👇
 
 #### input type file and `without` multiple attribute👇
 
-You can find the file form input.photo.file <br/>
 photo = file type input name<br/>
 It's give you a single url of the file
 
 ```JS
 const photo = input.photo.url
+
+//If you need, You can find the file form input.photo.file
 const photo_file = input.photos.file
 ```
 
@@ -76,12 +89,13 @@ photo = File type input name and it's required
 
 #### input type file and `with` multiple attribute👇
 
-You can find all file form input.photos.files <br/>
 photos = file type input name<br/>
 It's give you an array of url of the files
 
 ```JS
 const photos = input.photos.urls
+
+// If you need, You can find all file form input.photos.files
 const photos_file = input.photos.files
 ```
 
@@ -93,6 +107,8 @@ index = you can get dynamic index from loop
 <button onClick={() => form.delFile('photos', index)}>Delete</Button>
 ```
 
+_At all case you use url to display file_
+
 Note:<br/>
 
 1. Only the first argument is required, the rest are optional. <br/>
@@ -100,7 +116,7 @@ Note:<br/>
 3. simply use a coma (,) to skip optional arguments. like this 👇
 
 ```JS
-const [input, , form, setInput] = vtexInput({
+const [input, inputChange, , setInput] = vtexInput({
   name: "",
   email: "",
   permissions: [],
@@ -121,10 +137,10 @@ form.data();
 
 ### Get all the input data as an object
 
-input = first argument of the hook
+input = first argument of the hook that's store all the input data
 
 ```JS
-input
+const allData = input
 ```
 
 Note:<br/>
@@ -150,15 +166,15 @@ axios.post("/api/v1/test/file", input).then((res) => {
 });
 ```
 
-Don't worry you can use both type of input data in api as you like, But i will show you the best way to use it.
+Don't worry when don't use any file type input, you can use both (`input` or `form.data()`) type of input data in API as you like, But I will show you the best way to use it.
 
 ### Use setInput to set the custom value of the input as per your need
 
+example 👇 I set a random string as password
+
 ```JS
-setInput({
-  name: "John Doe",
-  email: "johndoe@example.com"
-  permissions: ["Order", "Product"],
+setInput((prev) => ({
+  ...prev,
   password: "random_string"
-})
+}))
 ```
