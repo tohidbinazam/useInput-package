@@ -2,7 +2,8 @@
 
 # V-Tex Input
 
-`A useful react hook to handle any type of input data just with an event`
+`A useful react hook to handle any type of input data just with an event` <br/>
+You can use this package with any react ui library like React-Bootstrap, Material UI, Tailwind CSS, etc.
 
 ## Getting started
 
@@ -27,7 +28,7 @@ const [input, inputChange, form, setInput] = vtexInput({
   name: "",
   email: "",
   permissions: [],
-  photos: [],
+  photos: '',
   password: "",
 });
 ```
@@ -44,11 +45,10 @@ All input will be like those 👇
 />;
 
 <input
+  id="index"
   type="checkbox"
   name="permissions"
-  id="index"
-  // It required when you edit a form otherwise it's optional👇
-  checked={input.permissions?.includes("value")}
+  checked={input.permissions?.includes(value)}
   onChange={inputChange}
   value="value"
 />;
@@ -178,3 +178,7 @@ setInput((prev) => ({
   password: "random_string"
 }))
 ```
+
+### If you face any problem, please let me know. I will try to solve it as soon as possible.
+
+To knowing me, you just create an issue on github or e-mail me at [Tohid Bin Azam](mailto:tohidbinazamsunny1@gmail.com)

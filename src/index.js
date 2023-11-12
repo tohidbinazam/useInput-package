@@ -22,23 +22,21 @@ const useInput = (initialValue) => {
 
     if (type === 'file') {
       if (multiple) {
-        const urls = Array.from(files).map((file) => URL.createObjectURL(file));
-        const new_files = Array.from(files).map((file) => file);
-        if (input[name].files) {
-          return setInput((prev) => ({
-            ...prev,
-            [name]: {
-              files: [...prev[name].files, ...new_files],
-              urls: [...prev[name].urls, ...urls],
-            },
-          }));
-        }
+        const newFiles = Array.from(files);
+        const urls = newFiles.map((file) => URL.createObjectURL(file));
+
         return setInput((prev) => ({
           ...prev,
-          [name]: { files: new_files, urls },
+          [name]: {
+            files: prev[name]?.files
+              ? [...prev[name].files, ...newFiles]
+              : newFiles,
+            urls: prev[name]?.urls ? [...prev[name].urls, ...urls] : urls,
+          },
         }));
       } else {
         const url = URL.createObjectURL(files[0]);
+
         return setInput((prev) => ({
           ...prev,
           [name]: { file: files[0], url },
