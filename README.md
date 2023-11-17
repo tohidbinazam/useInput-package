@@ -5,6 +5,22 @@
 `A useful react hook to handle any type of input data just with an event` <br/>
 You can use this package with any react ui library like React-Bootstrap, Material UI, Tailwind CSS, etc.
 
+### Live demo with source code
+
+`How to properly utilize the all benefit of this package?` <br/>
+
+Live demo 👇
+
+```HTML
+https://vtex-input-demo.onrender.com/
+```
+
+Source code 👇
+
+```HTML
+https://github.com/tohidbinazam/vtex-input-demo
+```
+
 ## Getting started
 
 ### Installation
@@ -25,32 +41,35 @@ import vtexInput from 'vtex-input';
 
 ```JS
 const [input, inputChange, form, setInput] = vtexInput({
-  name: "",
-  email: "",
-  permissions: [],
-  photos: '',
-  password: "",
-});
+    name: '',
+    email: '',
+    password: '',
+    role: '',
+    permissions: [],
+    gender: '',
+    photo: null,
+    gallery: null,
+  });
 ```
 
 All input will be like those 👇
 
 ```HTML
 <input
-  type="email"
-  name="email"
+  type='email'
+  name='email'
   onChange={inputChange}
   value={input.email}
-  placeholder="Email Address"
+  placeholder='Give your email address'
 />;
 
 <input
-  id="index"
-  type="checkbox"
-  name="permissions"
+  id='index'
+  type='checkbox'
+  name='permissions'
   checked={input.permissions?.includes(value)}
   onChange={inputChange}
-  value="value"
+  value='value'
 />;
 
 ```
@@ -59,8 +78,8 @@ Also same for file type input 👇
 
 ```HTML
 <input
-  type="file"
-  name="photos"
+  type='file'
+  name='gallery'
   onChange={inputChange}
   multiple
 />;
@@ -77,7 +96,7 @@ It's give you a single url of the file
 const photo = input.photo.url
 
 //If you need, You can find the file form input.photo.file
-const photo_file = input.photos.file
+const photo_file = input.photo.file
 ```
 
 and remove the file<br/>
@@ -89,22 +108,22 @@ photo = File type input name and it's required
 
 #### input type file and `with` multiple attribute👇
 
-photos = file type input name<br/>
+gallery = file type input name<br/>
 It's give you an array of url of the files
 
 ```JS
-const photos = input.photos.urls
+const photos = input.gallery.urls
 
-// If you need, You can find all file form input.photos.files
-const photos_file = input.photos.files
+// If you need, You can find all file form input.gallery.files
+const photos_file = input.gallery.files
 ```
 
 and remove the file<br/>
-photos = File type input name and it's required<br/>
+gallery = File type input name and it's required<br/>
 index = you can get dynamic index from loop
 
 ```JSX
-<button onClick={() => form.delFile('photos', index)}>Delete</Button>
+<button onClick={() => form.delFile('gallery', index)}>Delete</Button>
 ```
 
 _At all case you use url to display file_
@@ -117,16 +136,16 @@ Note:<br/>
 
 ```JS
 const [input, inputChange, , setInput] = vtexInput({
-  name: "",
-  email: "",
+  name: '',
+  email: '',
   permissions: [],
 });
 ```
 
-### Use form.clear() to clear the form
+### Use form.reset() to clear the form
 
 ```JS
-form.clear();
+form.reset();
 ```
 
 ### Get all the input data as FormData object
@@ -151,18 +170,18 @@ Note:<br/>
 ### With file type input
 
 ```JS
-axios.post("/api/v1/test/file", form.data()).then((res) => {
+axios.post('/api/v1/test/file', form.data()).then((res) => {
   console.log(res);
-  form.clear();
+  form.reset();
 });
 ```
 
 ### Without file type input
 
 ```JS
-axios.post("/api/v1/test/file", input).then((res) => {
+axios.post('/api/v1/test/file', input).then((res) => {
   console.log(res);
-  form.clear();
+  form.reset();
 });
 ```
 
@@ -175,7 +194,7 @@ example 👇 I set a random string as password
 ```JS
 setInput((prev) => ({
   ...prev,
-  password: "random_string"
+  password: 'random_string'
 }))
 ```
 

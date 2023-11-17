@@ -47,7 +47,7 @@ const useInput = (initialValue) => {
     return setInput((prev) => ({ ...prev, [name]: value }));
   };
 
-  const clearForm = () => setInput(initialValue);
+  const resetForm = () => setInput(initialValue);
 
   const formData = () => {
     const formData = new FormData();
@@ -92,7 +92,7 @@ const useInput = (initialValue) => {
 
   const form = {
     data: formData,
-    clear: clearForm,
+    reset: resetForm,
     delFile: deleteFile,
   };
 
