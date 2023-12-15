@@ -7,17 +7,12 @@ const useInput = (initialValue) => {
     const { type, name, checked, value, files, multiple } = e.target;
 
     if (type === 'checkbox') {
-      if (checked) {
-        return setInput((prev) => ({
-          ...prev,
-          [name]: [...prev[name], value],
-        }));
-      } else {
-        return setInput((prev) => ({
-          ...prev,
-          [name]: prev[name].filter((item) => item !== value),
-        }));
-      }
+      return setInput((prev) => ({
+        ...prev,
+        [name]: checked
+          ? [...prev[name], value]
+          : prev[name].filter((item) => item !== value),
+      }));
     }
 
     if (type === 'file') {
@@ -47,7 +42,7 @@ const useInput = (initialValue) => {
     return setInput((prev) => ({ ...prev, [name]: value }));
   };
 
-  const resetForm = () => setInput(initialValue);
+  const clearForm = () => setInput(initialValue);
 
   const formData = () => {
     const formData = new FormData();
@@ -92,11 +87,20 @@ const useInput = (initialValue) => {
 
   const form = {
     data: formData,
-    reset: resetForm,
+    clear: clearForm,
     delFile: deleteFile,
   };
 
-  return [input, inputChange, form, setInput];
+  const getInputProps = (name, type) => ({
+    name,
+    ...(type && { type }),
+    onChange: inputChange,
+    ...(type !== 'file' &&
+      type !== 'radio' &&
+      type !== 'checkbox' && { value: input[name] }),
+  });
+
+  return [input, inputChange, form, setInput, getInputProps];
 };
 
 export default useInput;

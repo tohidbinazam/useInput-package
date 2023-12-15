@@ -70,6 +70,7 @@ All input will be like those 👇
   checked={input.permissions?.includes(value)}
   onChange={inputChange}
   value='value'
+  label='label'
 />;
 
 ```
