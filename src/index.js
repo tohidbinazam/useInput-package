@@ -16,27 +16,18 @@ const useInput = (initialValue) => {
     }
 
     if (type === 'file') {
-      if (multiple) {
-        const newFiles = Array.from(files);
-        const urls = newFiles.map((file) => URL.createObjectURL(file));
+      const newFiles = Array.from(files);
+      const urls = newFiles.map((file) => URL.createObjectURL(file));
 
-        return setInput((prev) => ({
-          ...prev,
-          [name]: {
-            files: prev[name]?.files
-              ? [...prev[name].files, ...newFiles]
-              : newFiles,
-            urls: prev[name]?.urls ? [...prev[name].urls, ...urls] : urls,
-          },
-        }));
-      } else {
-        const url = URL.createObjectURL(files[0]);
-
-        return setInput((prev) => ({
-          ...prev,
-          [name]: { file: files[0], url },
-        }));
-      }
+      return setInput((prev) => ({
+        ...prev,
+        [name]: {
+          file: multiple
+            ? [...(prev[name]?.file || []), ...newFiles]
+            : files[0],
+          url: multiple ? [...(prev[name]?.url || []), ...urls] : urls[0],
+        },
+      }));
     }
 
     return setInput((prev) => ({ ...prev, [name]: value }));
@@ -52,13 +43,12 @@ const useInput = (initialValue) => {
         for (const item of input[key]) {
           formData.append(key, item);
         }
-      } else if (input[key] && (input[key].file || input[key].files)) {
-        if (input[key].file || input[key].files.length === 1) {
-          formData.append(key, input[key].file || input[key].files[0]);
-        } else {
-          for (const file of input[key].files) {
-            formData.append(key, file);
-          }
+      } else if (input[key] && input[key].file) {
+        const files = Array.isArray(input[key].file)
+          ? input[key].file
+          : [input[key].file];
+        for (const file of files) {
+          formData.append(key, file);
         }
       } else {
         formData.append(key, input[key]);
@@ -69,29 +59,22 @@ const useInput = (initialValue) => {
   };
 
   const deleteFile = (name, index) => {
-    if (index === undefined) {
-      return setInput((prev) => ({
+    setInput((prev) => {
+      const updatedValue = Array.isArray(prev[name]?.url)
+        ? {
+            file: prev[name].file.filter((file, i) => i !== index),
+            url: prev[name].url.filter((url, i) => i !== index),
+          }
+        : initialValue[name];
+
+      return {
         ...prev,
-        [name]: initialValue[name],
-      }));
-    }
-
-    return setInput((prev) => ({
-      ...prev,
-      [name]: {
-        files: prev[name].files.filter((file, i) => i !== index),
-        urls: prev[name].urls.filter((url, i) => i !== index),
-      },
-    }));
+        [name]: updatedValue,
+      };
+    });
   };
 
-  const form = {
-    data: formData,
-    clear: clearForm,
-    delFile: deleteFile,
-  };
-
-  const getInputProps = (name, type) => ({
+  const inputProps = (name, type) => ({
     name,
     ...(type && { type }),
     onChange: inputChange,
@@ -100,7 +83,13 @@ const useInput = (initialValue) => {
       type !== 'checkbox' && { value: input[name] }),
   });
 
-  return [input, inputChange, form, setInput, getInputProps];
+  const form = {
+    data: formData,
+    clear: clearForm,
+    delFile: deleteFile,
+  };
+
+  return [input, inputProps, form, setInput];
 };
 
 export default useInput;
