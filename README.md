@@ -12,7 +12,7 @@ You can use this package with any react ui library like React-Bootstrap, Materia
 Live demo 👇
 
 ```HTML
-https://vtex-input-demo.onrender.com/
+https://vtex-input.onrender.com/
 ```
 
 Source code 👇
@@ -132,11 +132,21 @@ Note:<br/>
 2. simply use a coma (,) to skip optional arguments. like this 👇
 
 ```JSX
+// 1.
+const [input, inputProps, form] = vtexInput({
+  name: '',
+  email: '',
+  permissions: [],
+});
+
+// 2.
 const [input, inputProps, , setInput] = vtexInput({
   name: '',
   email: '',
   permissions: [],
 });
+
+
 ```
 
 ### Use form.clear() to reset the form
