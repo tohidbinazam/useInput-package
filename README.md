@@ -18,7 +18,7 @@ https://vtex-input.onrender.com/
 Source code 👇
 
 ```HTML
-https://github.com/tohidbinazam/vtex-input-demo
+https://github.com/tohidbinazam/vtex-input-app
 ```
 
 ## Getting started
@@ -48,7 +48,7 @@ const [input, inputProps, form, setInput] = vtexInput({
     permissions: [],
     gender: '',
     photo: null,
-    gallery: null,
+    gallery: null
   });
 ```
 
@@ -56,19 +56,22 @@ All input will be like those 👇
 
 ```JSX
 <input
-  {...inputProps('name', 'type')}
+  {...inputProps('email', 'email')}
   placeholder='Give your email address'
 />;
 
 <input
   id='index'
   {...inputProps('permissions', 'checkbox')}
-  checked={input.permissions?.includes('value')}
+
+  // checked={input.permissions?.includes('value')}
+  // This "checked" are used when you edit the existing form data with initial value
   value='value'
   label='label'
 />;
 
-{...inputProps('name', 'type')} // First argument is required it's input name and second argument is input type
+{...inputProps('name', 'type')}
+// First argument is required it's input name and second argument is input type
 ```
 
 If you not set second argument then you definitely set type="type of input" in input tag
@@ -85,15 +88,18 @@ Also same for file type input 👇
 
 #### input type file and `without` multiple attribute👇
 
-```JS
-const display_photo = input.photo.url
-
-//If you need, You can find the file form input.photo.file
-const photo_file = input.photo.file
-```
-
 photo == file type input name<br/>
-It's give you an object with url and file
+
+```JS
+const photo = input.photo
+// It's give you an object with url and file
+
+const display_photo = input.photo.url
+// It's give you an url to show the file
+
+const photo_file = input.photo.file
+//If you need, You can find the file form input.photo.file
+```
 
 and remove the file<br/>
 
@@ -106,13 +112,16 @@ photo = File type input name and it's required
 #### input type file and `with` multiple attribute👇
 
 gallery == file type input name<br/>
-It's give you an array of url of the files
 
 ```JS
-const photos = input.gallery.url
+const photos = input.gallery
+// It's give you an object of array with url and file
 
-// If you need, You can find all file form input.gallery.files
+const photos = input.gallery.url
+// It's give you an array of url of the files
+
 const photos_file = input.gallery.file
+// If you need, You can find all file form input.gallery.file
 ```
 
 and remove the file<br/>
