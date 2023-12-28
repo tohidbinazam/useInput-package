@@ -1,6 +1,6 @@
 ## introduction
 
-# V-Tex Input v3.0.0
+# V-Tex Input v3.0.2
 
 `A useful react hook to handle any type of input data just with an event` <br/>
 You can use this package with any react ui library like React-Bootstrap, Material UI, Tailwind CSS, etc.
@@ -63,9 +63,7 @@ All input will be like those 👇
 <input
   id='index'
   {...inputProps('permissions', 'checkbox')}
-
-  // checked={input.permissions?.includes('value')}
-  // This "checked" are used when you edit the existing form data with initial value
+  checked={input.permissions?.includes('value')}
   value='value'
   label='label'
 />;
@@ -107,7 +105,7 @@ and remove the file<br/>
 <button onClick={() => form.delFile('photo')}>Delete</button>
 ```
 
-photo = File type input name and it's required
+form.delFile('photo') function argument is File type input name and it's required
 
 #### input type file and `with` multiple attribute👇
 
@@ -130,12 +128,13 @@ and remove the file<br/>
 <button onClick={() => form.delFile('gallery', index)}>Delete</Button>
 ```
 
-gallery == File type input name and it's required<br/>
-index == you can get dynamic index from loop
+gallery == File type input name<br/>
+index == you can get dynamic index from loop<br/>
+form.delFile('gallery', index) function both arguments are required
 
 _At all case you use url to display file_
 
-Note:<br/>
+### Note:
 
 1. Only the first argument is required, the rest are optional. <br/>
 2. simply use a coma (,) to skip optional arguments. like this 👇
