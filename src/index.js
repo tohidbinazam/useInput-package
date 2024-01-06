@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const vtexInput = (initialValue) => {
+const useInput = (initialValue) => {
   const [input, setInput] = useState(initialValue);
 
   const inputChange = (e) => {
@@ -21,12 +21,12 @@ const vtexInput = (initialValue) => {
 
       return setInput((prev) => ({
         ...prev,
-        [name]: {
-          file: multiple
-            ? [...(prev[name]?.file || []), ...newFiles]
-            : files[0],
-          url: multiple ? [...(prev[name]?.url || []), ...urls] : urls[0],
-        },
+        [name]: multiple
+          ? {
+              file: [...(prev[name]?.file || []), ...newFiles],
+              url: [...(prev[name]?.url || []), ...urls],
+            }
+          : { file: files[0], url: urls[0] },
       }));
     }
 
@@ -58,6 +58,22 @@ const vtexInput = (initialValue) => {
     return formData;
   };
 
+  const inputData = () => {
+    const data = {};
+
+    for (const key in input) {
+      if (Array.isArray(input[key])) {
+        data[key] = input[key];
+      } else if (input[key] && input[key].file) {
+        data[key] = input[key].file;
+      } else {
+        data[key] = input[key];
+      }
+    }
+
+    return data;
+  };
+
   const deleteFile = (name, index) => {
     setInput((prev) => {
       const updatedValue = Array.isArray(prev[name]?.url)
@@ -74,22 +90,25 @@ const vtexInput = (initialValue) => {
     });
   };
 
-  const inputProps = (name, type) => ({
+  const inputProps = (name, type, value) => ({
     name,
     ...(type && { type }),
     onChange: inputChange,
-    ...(type !== 'file' &&
-      type !== 'radio' &&
-      type !== 'checkbox' && { value: input[name] }),
+    ...(type === 'file' || type === 'radio' || type === 'checkbox'
+      ? value && { value }
+      : { value: input[name] }),
   });
+
+  const setValue = (values) => setInput((prev) => ({ ...prev, ...values }));
 
   const form = {
     data: formData,
+    input: inputData,
     clear: clearForm,
     delFile: deleteFile,
   };
 
-  return [input, inputProps, form, setInput];
+  return [input, inputProps, form, setValue];
 };
 
-export default vtexInput;
+export default useInput;

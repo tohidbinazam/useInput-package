@@ -22,7 +22,9 @@
     "react-hook",
     "form-data",
     "use-input",
-    "input-data"
+    "input-data",
+    "react Input hook",
+    "react form hook"
   ],
   "author": "tohidbinazam",
   "license": "ISC",
