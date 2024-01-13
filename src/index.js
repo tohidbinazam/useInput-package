@@ -22,10 +22,13 @@ const useInput = (initialValue) => {
       return setInput((prev) => ({
         ...prev,
         [name]: multiple
-          ? {
-              file: [...(prev[name]?.file || []), ...newFiles],
-              url: [...(prev[name]?.url || []), ...urls],
-            }
+          ? [
+              ...(prev[name] || []),
+              ...newFiles.map((file, i) => ({
+                file,
+                url: urls[i],
+              })),
+            ]
           : { file: files[0], url: urls[0] },
       }));
     }
@@ -36,51 +39,44 @@ const useInput = (initialValue) => {
   const clearForm = () => setInput(initialValue);
 
   const formData = () => {
-    const formData = new FormData();
+    const data = new FormData();
 
     for (const key in input) {
-      if (Array.isArray(input[key])) {
+      if (input[key] && Array.isArray(input[key]) && input[key][0]?.file) {
+        input[key].forEach((item) => data.append(key, item.file));
+      } else if (input[key] && input[key].file) {
+        data.append(key, input[key].file);
+      } else if (Array.isArray(input[key])) {
         for (const item of input[key]) {
-          formData.append(key, item);
-        }
-      } else if (input[key] && input[key].file) {
-        const files = Array.isArray(input[key].file)
-          ? input[key].file
-          : [input[key].file];
-        for (const file of files) {
-          formData.append(key, file);
+          data.append(key, item);
         }
       } else {
-        formData.append(key, input[key]);
-      }
-    }
-
-    return formData;
-  };
-
-  const inputData = () => {
-    const data = {};
-
-    for (const key in input) {
-      if (Array.isArray(input[key])) {
-        data[key] = input[key];
-      } else if (input[key] && input[key].file) {
-        data[key] = input[key].file;
-      } else {
-        data[key] = input[key];
+        data.append(key, input[key]);
       }
     }
 
     return data;
   };
 
+  const inputData = () => {
+    const data = {};
+
+    for (const key in input) {
+      if (input[key] && Array.isArray(input[key]) && input[key][0]?.file) {
+        data[key] = input[key].map((item) => item.file);
+      } else if (input[key] && input[key].file) {
+        data[key] = input[key].file;
+      } else {
+        data[key] = input[key];
+      }
+    }
+    return data;
+  };
+
   const deleteFile = (name, index) => {
     setInput((prev) => {
-      const updatedValue = Array.isArray(prev[name]?.url)
-        ? {
-            file: prev[name].file.filter((file, i) => i !== index),
-            url: prev[name].url.filter((url, i) => i !== index),
-          }
+      const updatedValue = Array.isArray(prev[name])
+        ? prev[name].filter((_, i) => i !== index)
         : initialValue[name];
 
       return {
