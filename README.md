@@ -1,8 +1,8 @@
 ## introduction
 
-# V-Tex Input v3.0.2
+# V-Tex Input v4.0.0
 
-`A useful react hook to handle any type of input data just with an event` <br/>
+`A useful react hook to handle any type of input data for form CRUD operation` <br/>
 You can use this package with any react ui library like React-Bootstrap, Material UI, Tailwind CSS, etc.
 
 ### Live demo with source code
@@ -40,39 +40,41 @@ import vtexInput from 'vtex-input';
 ### Example
 
 ```JSX
-const [input, inputProps, form, setInput] = vtexInput({
+const [input, inputProps, form, setValue] = vtexInput({
+    // Hare you set all initial value for create and edit form operation
     name: '',
     email: '',
     password: '',
     role: '',
-    permissions: [],
+    permissions: '',
     gender: '',
-    photo: null,
-    gallery: null
+    photo: '',
+    gallery: '',
   });
 ```
 
 All input will be like those 👇
 
 ```JSX
+{...inputProps('name', 'type')}
+// Both argument are required First is input name and second argument is input type
+
 <input
-  {...inputProps('email', 'email')}
-  placeholder='Give your email address'
+  {...inputProps("name", 'text')}
+  placeholder='Give your full name'
 />;
+
+{...inputProps('name', 'type', 'value')}
+// Only set the third argument when you use type == 'checkbox' or 'radio' and it's input value
 
 <input
   id='index'
-  {...inputProps('permissions', 'checkbox')}
-  checked={input.permissions?.includes('value')}
-  value='value'
-  label='label'
+  {...inputProps('permissions', 'checkbox', 'product')}
+  checked={input.permissions?.includes('product')}
 />;
 
-{...inputProps('name', 'type')}
-// First argument is required it's input name and second argument is input type
-```
 
-If you not set second argument then you definitely set type="type of input" in input tag
+```
 
 Also same for file type input 👇
 
@@ -82,21 +84,26 @@ Also same for file type input 👇
 />;
 ```
 
-### At latest update you get file url to display and remove file
+### At latest update you get file url to display and remove file feature
 
 #### input type file and `without` multiple attribute👇
 
 photo == file type input name<br/>
 
 ```JS
-const photo = input.photo
-// It's give you an object with url and file
 
-const display_photo = input.photo.url
+<div>
+  <img src={input.photo.url} alt='photo' />
+  <button onClick={() => form.delFile('photo')}>Delete</button>
+</div>
+
+const photo_url = input.photo.url
 // It's give you an url to show the file
 
 const photo_file = input.photo.file
 //If you need, You can find the file form input.photo.file
+
+// Note that, "photo" is a single object from input object
 ```
 
 and remove the file<br/>
@@ -112,14 +119,26 @@ form.delFile('photo') function argument is File type input name and it's require
 gallery == file type input name<br/>
 
 ```JS
+
+input.gallery.map((data, index) => (
+  <div key={index}>
+    <img src={data.url} alt='gallery'/>
+    <button onClick={() => form.delFile('gallery', index)}>
+      Delete
+    </button>
+  </div>
+))
+
 const photos = input.gallery
-// It's give you an object of array with url and file
+// It's give you an array of object with url and file
 
-const photos = input.gallery.url
-// It's give you an array of url of the files
+const photo_url = data.url
+// It's give you an url to show the file
 
-const photos_file = input.gallery.file
-// If you need, You can find all file form input.gallery.file
+const photo_file = data.file
+//If you need, You can find the file form data.file
+
+// Note that, "data" get from loop and it's a single object from input.gallery array
 ```
 
 and remove the file<br/>
@@ -153,8 +172,6 @@ const [input, inputProps, , setInput] = vtexInput({
   email: '',
   permissions: [],
 });
-
-
 ```
 
 ### Use form.clear() to reset the form
@@ -172,15 +189,16 @@ form.data();
 ### Get all the input data as an object
 
 ```JS
-const allData = input
+form.input()
 ```
 
-input == first argument of the hook that's store all the input data
+input == first argument of the hook that's store all data
 
 Note:<br/>
 
-1. If you not use any file type input then you can use `input` or `form.data()` as you like and simply use it in api (For this case i recommend to use `input` ) <br/>
-2. If you use any file type input then you definitely use `form.data()` in api
+1. If you not use any file type input then you can use `input` / `form.data()` / `form.input()` in your API(For this case i recommend to use `input` ) <br/>
+2. If you use any file type input then you definitely use `form.data()` in API
+3. If you get solid input data for FireBase or any other database then you can use `form.input()` to get all input data as an object
 
 ### With file type input
 
@@ -207,10 +225,7 @@ Don't worry when you don't use any file type input, then you can use both (`inpu
 example 👇 I set a random string as password
 
 ```JS
-setInput((prev) => ({
-  ...prev,
-  password: 'random_string'
-}))
+setValue({ password });
 ```
 
 ### If you face any problem, please let me know. I will try to solve it as soon as possible.
