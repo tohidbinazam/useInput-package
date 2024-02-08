@@ -1,6 +1,6 @@
 ## introduction
 
-# V-Tex Input v4.0.0
+# V-Tex Input v4 Release
 
 `A useful react hook to handle any type of input data for form CRUD operation` <br/>
 You can use this package with any react ui library like React-Bootstrap, Material UI, Tailwind CSS, etc.
@@ -60,7 +60,7 @@ All input will be like those 👇
 // Both argument are required First is input name and second argument is input type
 
 <input
-  {...inputProps("name", 'text')}
+  {...inputProps('name', 'text')}
   placeholder='Give your full name'
 />;
 
@@ -190,6 +190,8 @@ form.data();
 
 ```JS
 form.input()
+
+// If you send all input data with file input data to firebase or something else then you can use form.input() to get the all solid data
 ```
 
 input == first argument of the hook that's store all data
