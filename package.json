@@ -1,7 +1,7 @@
 {
   "name": "vtex-input",
   "version": "4.0.2",
-  "description": "A useful react hook to handle any type of input data just with an event",
+  "description": "A useful react hook to handle any type of input data for CRUD operation",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/tohidbinazam/vtex-input.git"
