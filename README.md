@@ -1,6 +1,6 @@
-## introduction
+## Introduction
 
-# V-Tex Input v4 Release
+# V-Tex Input V4 Release
 
 `A useful react hook to handle any type of input data for CRUD operation` <br/>
 You can use this package with any react ui library like React-Bootstrap, Material UI, Tailwind CSS, etc.
@@ -144,7 +144,7 @@ const photo_file = data.file
 and remove the file<br/>
 
 ```JSX
-<button onClick={() => form.delFile('gallery', index)}>Delete</Button>
+<button onClick={() => form.delFile('gallery', index)}>Delete</button>
 ```
 
 gallery == File type input name<br/>
@@ -163,14 +163,14 @@ _At all case you use url to display file_
 const [input, inputProps, form] = vtexInput({
   name: '',
   email: '',
-  permissions: [],
+  permissions: '',
 });
 
 // 2.
-const [input, inputProps, , setInput] = vtexInput({
+const [input, inputProps, , setValue] = vtexInput({
   name: '',
   email: '',
-  permissions: [],
+  permissions: '',
 });
 ```
 
@@ -222,7 +222,7 @@ axios.post('/api/v1/test/file', input).then((res) => {
 
 Don't worry when you don't use any file type input, then you can use both (`input` or `form.data()`) type of input data in API as you like, But I will show you the best way to use it 👆
 
-### Use setInput to set the custom value as per your need
+### Use setValue to set the custom value as per your need
 
 example 👇 I set a random string as password
 
